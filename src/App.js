@@ -75,7 +75,7 @@ function App() {
             <div className="mainWrapper">
                 <div className="mainContent">
                     <div className="imageHolder">
-                        {imageURL && <img src={imageURL} alt="Upload Preview" crossOrigin="anonymous" ref={imageRef} />}
+                        {imageURL && <img src={imageURL} alt="Upload Preview" crossOrigin="anonymous" ref={imageRef} width="200px" />}
                     </div>
                     {results.length > 0 && <div className='resultsHolder'>
                         {results.map((result, index) => {
@@ -96,7 +96,7 @@ function App() {
                     {history.map((image, index) => {
                         return (
                             <div className="recentPrediction" key={`${image}${index}`}>
-                                <img src={image} alt='Recent Prediction' onClick={() => setImageURL(image)} />
+                                <img src={image} alt='Recent Prediction' onClick={() => setImageURL(image)} width="200px" />
                             </div>
                         )
                     })}
