@@ -38,8 +38,9 @@ code {
 }
 
 .mainContent {
+    display: flex;
+    flex-direction: column;
     width:100%;
-    align-items: center;
     margin-bottom: 10px;
 
     @media (max-width: 800px) {
@@ -69,12 +70,6 @@ code {
         opacity: 0;
     }
 
-    .or {
-        align-items: center;
-        display: inline-flex;
-        padding: 0 20px;
-    }
-
     .uploadImage {
         padding: 8px 16px;
         font-size: 16px;
@@ -90,12 +85,11 @@ code {
 
 .imageHolder {
     width: 60%;
-    display: block;
-    flex: 0 0 60%;
-    max-width: 900px;
-    height: 70vmin;
+    display: flex;
 
     @media (max-width: 800px) {
+        display: flex;
+        flex-direction: column;
         width: 100%;
         height: auto;
         margin-bottom: 15px;
@@ -111,6 +105,12 @@ code {
         height: 100%;
         object-fit: cover;
     }
+}
+
+.btn-result-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .resultsHolder {
@@ -164,7 +164,7 @@ code {
     border-radius: 0;
     cursor: pointer;
     outline: none;
-    margin-top: 16px;
+    margin: 12px;
 }
 
 .recentPredictions {

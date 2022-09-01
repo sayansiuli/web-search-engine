@@ -112,16 +112,17 @@ function App() {
             <h1 className='header'>Image Identification</h1>
             <div className='inputHolder'>
                 <input type='file' accept='image/*' capture='camera' className='uploadInput' onChange={uploadImage} ref={fileInputRef} />
-                <button className='uploadImage' onClick={triggerUpload}>Upload Image</button>
-                <span className='or'>OR</span>
                 <input type="text" placeholder='Paster image URL' ref={textInputRef} onChange={handleOnChange} />
+                <button className='uploadImage' onClick={triggerUpload}>Upload Image</button>
             </div>
             <div className="mainWrapper">
                 <div className="mainContent">
                     <div className="imageHolder">
                         {imageURL && <img src={imageURL} alt="Upload Preview" crossOrigin="anonymous" ref={imageRef} width="200px" />}
-                    </div>
-                    {results.length > 0 && <div className='resultsHolder'>
+                        {imageURL && (
+                            <div className="btn-result-block">
+                                <button className='button' onClick={identify}>Identify Image</button>
+                                {results.length > 0 && <div className='resultsHolder'>
                         {results.map((result, index) => {
                             return (
                                 <div className='result' key={result.className}>
@@ -131,7 +132,9 @@ function App() {
                             )
                         })}
                     </div>}
-                    {imageURL && <button className='button' onClick={identify}>Identify Image</button>}
+                            </div>
+                        )}
+                    </div>
                     <div id='wikiresults'></div>
                 </div>
                 {history.length > 0 && <div className="recentPredictions">
