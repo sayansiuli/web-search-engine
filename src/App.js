@@ -38,6 +38,8 @@ function App() {
         textInputRef.current.value = ''
         const results = await model.classify(imageRef.current)
         setResults(results)
+        const searchResults = document.getElementById('wikiresults');
+        searchResults.innerHTML = '';
     }
 
     const handleOnChange = (e) => {
@@ -48,6 +50,48 @@ function App() {
     const triggerUpload = () => {
         fileInputRef.current.click()
     }
+
+    async function searchWikipedia(searchQuery) {
+        const endpoint = `https://en.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=20&srsearch=${searchQuery}`;
+        const response = await fetch(endpoint);
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+        const json = await response.json();
+        return json;
+    }
+
+    async function handleSearch(results) {
+        if(results.length > 0 && results[0].className){
+            const res = await searchWikipedia(results[0].className);
+            displayResults(res);
+        }
+    }
+
+    function displayResults(results) {
+        const searchResults = document.getElementById('wikiresults');
+      
+        results.query.search.forEach(result => {
+          const url = `https://en.wikipedia.org/?curid=${result.pageid}`;
+      
+          searchResults.insertAdjacentHTML(
+            'beforeend',
+            `<div class="result-item">
+                <a href="${url}" target="_blank" rel="noopener">
+                    <h3 class="result-title">
+                        ${result.title}
+                    </h3>
+                    <a href="${url}" class="result-link" target="_blank" rel="noopener">${url}</a>
+                    <span class="result-snippet">${result.snippet}</span><br>
+                </a>
+            </div>`
+          );
+        });
+    }
+    
+    useEffect(()=>{
+        handleSearch(results);
+    },[results])
 
     useEffect(() => {
         loadModel()
@@ -87,10 +131,10 @@ function App() {
                             )
                         })}
                     </div>}
+                    {imageURL && <button className='button' onClick={identify}>Identify Image</button>}
+                    <div id='wikiresults'></div>
                 </div>
-                {imageURL && <button className='button' onClick={identify}>Identify Image</button>}
-            </div>
-            {history.length > 0 && <div className="recentPredictions">
+                {history.length > 0 && <div className="recentPredictions">
                 <h2>Recent Images</h2>
                 <div className="recentImages">
                     {history.map((image, index) => {
@@ -101,7 +145,8 @@ function App() {
                         )
                     })}
                 </div>
-            </div>}
+            </div>}  
+            </div>  
         </div>
     );
 }
